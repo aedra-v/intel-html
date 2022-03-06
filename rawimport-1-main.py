@@ -22,13 +22,12 @@ firebase_admin.initialize_app()
 def incominghttp(request):
 	fields = {}
 	data = request.form.to_dict()
+		datetimestamp = datetime.now()
 	for field in data:
 		fields[field] = data[field]
 		print('Processed field: %s' % field)
-	packagejson = json.dumps(fields, indent = 4)
+	packagejson = json.dumps(fields, datetimestamp, indent = 4)
 	json_object = json.loads(packagejson)
-		json_datetimestamp = time
-		json.dump(json_datetimestamp, json_object)
 	importintel = firestore.client().collection('intel-dump')
 	intelligence = importintel.document()
 	intelligence.set(json_object)
