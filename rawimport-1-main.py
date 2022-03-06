@@ -22,7 +22,9 @@ firebase_admin.initialize_app()
 def incominghttp(request):
 	fields = {}
 	data = request.form.to_dict()
-	import_aion = {"utodatetest":[datetime.now()]}
+	datetimestamp = datetime.now()
+	import_aion = {"utodatetest":[datetimestamp]}
+	packageaion = json.dumps(import_aion, indent = 4, default = str)
 	for field in data:
 		fields[field] = data[field]
 		print('Processed field: %s' % field)
