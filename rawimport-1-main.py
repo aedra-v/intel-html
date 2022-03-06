@@ -9,6 +9,7 @@ import requests
 import json
 import sys
 import timeit
+from datetime import datetime
 
 headers = {
 	'Access-Control-Allow-Origin': '*',
@@ -26,6 +27,8 @@ def incominghttp(request):
 		print('Processed field: %s' % field)
 	packagejson = json.dumps(fields, indent = 4)
 	json_object = json.loads(packagejson)
+		json_datetimestamp = time
+		json.dump(json_datetimestamp, json_object)
 	importintel = firestore.client().collection('intel-dump')
 	intelligence = importintel.document()
 	intelligence.set(json_object)
