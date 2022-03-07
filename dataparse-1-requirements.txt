@@ -8,3 +8,4 @@ google-cloud-firestore==2.3.4
 firebase-admin==5.2.0
 requests==2.27.1
 pandas==1.4.1
+datetime==4.4.0
