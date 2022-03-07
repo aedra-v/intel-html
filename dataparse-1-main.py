@@ -9,16 +9,17 @@ import requests
 import json
 import sys
 import timeit
+from datetime import datetime
+
+firebase_admin.initialize_app()
 
 def firestore_delta(event, context):
-    """Triggered by a change to a Firestore document.
-    Args:
-         event (dict): Event payload.
-         context (google.cloud.functions.Context): Metadata for the event.
-    """
-    resource_string = context.resource
-    json_object = json.dumps(event["value"])
-    # print out the resource string that triggered the function
-    print(f"Function triggered by change to: {json_object}.")
-    # now print out the entire event object
-    print(str(event))
+     resource_string = context.resource
+     json_object = json.dumps(event["value"])
+     print(f"Function triggered by change to: {json_object}.")
+     print(str(event))
+     importintel = firestore.client().collection('d-prov')
+     intelligence = importintel.document()
+     intelligence.set(json_object)
+
+     return f'Success'
