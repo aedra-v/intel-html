@@ -25,11 +25,13 @@ def incominghttp(request):
 	datetimestamp = datetime.now()
 	import_aion = {"utodatetest":[datetimestamp]}
 	packageaion = json.dumps(import_aion, indent = 4, default = str)
+	json_aionobject = json.loads(packageaion)
 	for field in data:
 		fields[field] = data[field]
 		print('Processed field: %s' % field)
 	packagejson = json.dumps(fields, indent = 4)
 	json_object = json.loads(packagejson)
+	json_object.update(json_aionobject)
 	importintel = firestore.client().collection('intel-dump')
 	intelligence = importintel.document()
 	intelligence.set(json_object)
