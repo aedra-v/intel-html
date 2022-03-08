@@ -10,16 +10,16 @@ import json
 import sys
 import timeit
 from datetime import datetime
+import pandas
 
 firebase_admin.initialize_app()
 
 def firestore_delta(event, context):
      resource_string = context.resource
-     json_object = json.dumps(event["value"])
-     print(f"Function triggered by change to: {json_object}.")
-     print(str(event))
+     json_object = json.dumps(event["value"], indent = 4)
+     json_string = json.loads(json_object)
      importintel = firestore.client().collection('d-prov')
      intelligence = importintel.document()
-     intelligence.set(json_object)
+     intelligence.set(json_string)
 
      return f'Success'
