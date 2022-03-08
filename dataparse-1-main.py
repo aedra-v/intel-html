@@ -16,14 +16,12 @@ firebase_admin.initialize_app()
 
 def firestore_delta(event, context):
      resource_string = context.resource
-     event_string = event.resource
-     importurl = event_string.items()[5]
+     print(resource_string)
 
-     a1 = str(importurl)
-     print(a1)
-     a2 = a1.split("/")
-     v1 = a2[-1]
-     print(v1)
+     importurl_list = (event['value']['fields']['url'])
+     print(importurl_list)
+     importurl_UID = (importurl_list.split("/")[-1]
+     print(importurl_UID)
 
      importintel = firestore.client().collection('d-prov')
      intelligence = importintel.document()
