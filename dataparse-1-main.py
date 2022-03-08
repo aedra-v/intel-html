@@ -16,6 +16,12 @@ firebase_admin.initialize_app()
 
 def firestore_delta(event, context):
      resource_string = context.resource
+     
+     a1 = str(event()[5])
+     a2 = a1.split("/")
+     v1 = a2[-1]
+     print(v1)
+     
      json_object = json.dumps(event["value"], indent = 4)
      json_string = json.loads(json_object)
      importintel = firestore.client().collection('d-prov')
