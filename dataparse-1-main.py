@@ -18,10 +18,9 @@ def firestore_delta(event, context):
      resource_string = context.resource
      print(resource_string)
 
-     importurl_list = (event['value']['fields']['url'])
-     print(importurl_list)
-     importurl_UID = (importurl_list.split("/")[-1]
-     print(importurl_UID)
+     importurlstring = event['value']['fields']['url']['stringValue']
+     importurlUID = importurlstring.split("/")[-1]
+     print(importurlUID)
 
      importintel = firestore.client().collection('d-prov')
      intelligence = importintel.document()
