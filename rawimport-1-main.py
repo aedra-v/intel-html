@@ -24,14 +24,13 @@ def incominghttp(request):
 	data = request.form.to_dict()
 	for field in data:
 		fields[field] = data[field]
-		print('Processed field: %s' % field)
 		
 	importepoch = time.time()
 	fields.update({'epoch': importepoch})
 	
 	importurlstring = fields['url']
 	inteltype = importurlstring[33:]
-	event.update({"intel-type": inteltype})
+	fields.update({"intel-type": inteltype})
 
 	packagejson = json.dumps(fields, indent = 4)
 	json_object = json.loads(packagejson)
