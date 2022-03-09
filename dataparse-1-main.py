@@ -15,18 +15,10 @@ import pandas
 firebase_admin.initialize_app()
 
 def firestore_delta(event, context):
-     resource_string = 'projects/artaeum-py/databases/(default)/documents/intel-dump/ESeAD6qvs5u3iS9IoxLY'
-     inteldumpUID = resource_string.split('/')[-1]
-     event.update({"inteldump UID": inteldumpUID})
-
-     importurlstring = event['value']['fields']['url']['stringValue']
-     importurlUID = importurlstring[33:]
-     event.update({"Intel Type": importurlUID})
-     
-     event.pop('oldValue')
-     event.pop('updateMask')
-
-     importintel = firestore.client().collection('d-prov')
+     print(event)
+     routedcollection = event['value']['fields']['inteltype']['stringValue'].replace("_", "")
+     print(routedcollection)
+     importintel = firestore.client().collection(routedcollection)
      intelligence = importintel.document()
      intelligence.set(event)
 
