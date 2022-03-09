@@ -26,7 +26,7 @@ def incominghttp(request):
 		fields[field] = data[field]
 		print('Processed field: %s' % field)
 	datetimestamp = datetime.now()
-	fields.update('importstamp': datetimestamp)
+	fields.update({'importstamp': datetimestamp})
 
 	packagejson = json.dumps(fields, indent = 4)
 	json_object = json.loads(packagejson)
