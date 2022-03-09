@@ -9,7 +9,7 @@ import requests
 import json
 import sys
 import timeit
-from datetime import datetime
+import time
 
 headers = {
 	'Access-Control-Allow-Origin': '*',
@@ -25,8 +25,8 @@ def incominghttp(request):
 	for field in data:
 		fields[field] = data[field]
 		print('Processed field: %s' % field)
-	datetimestamp = datetime.now()
-	fields.update({'importstamp': datetimestamp})
+	importepoch = time.time()
+	fields.update({'epoch': importepoch})
 
 	packagejson = json.dumps(fields, indent = 4)
 	json_object = json.loads(packagejson)
