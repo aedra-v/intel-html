@@ -22,16 +22,15 @@ firebase_admin.initialize_app()
 def incominghttp(request):
 	fields = {}
 	data = request.form.to_dict()
-	datetimestamp = datetime.now()
-	import_aion = {"utodatetest":[datetimestamp]}
-	packageaion = json.dumps(import_aion, indent = 4, default = str)
-	json_aionobject = json.loads(packageaion)
 	for field in data:
 		fields[field] = data[field]
 		print('Processed field: %s' % field)
+	datetimestamp = datetime.now()
+	fields.update('importstamp': datetimestamp)
+
 	packagejson = json.dumps(fields, indent = 4)
 	json_object = json.loads(packagejson)
-	json_object.update(json_aionobject)
+
 	importintel = firestore.client().collection('intel-dump')
 	intelligence = importintel.document()
 	intelligence.set(json_object)
