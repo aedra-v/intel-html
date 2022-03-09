@@ -29,7 +29,7 @@ def incominghttp(request):
 	importepoch = time.time()
 	fields.update({'epoch': importepoch})
 	
-	fields['url']
+	importurlstring = fields['url']
 	inteltype = importurlstring[33:]
 	event.update({"intel-type": inteltype})
 
