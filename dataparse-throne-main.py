@@ -10,7 +10,8 @@ import json
 import sys
 import timeit
 from datetime import datetime
-import pandas
+import pandas as pd
+from beautifulsoup4 import BeautifulSoup
 
 def parse_throne(event, context):
     resource_string = context.resource
@@ -19,12 +20,16 @@ def parse_throne(event, context):
     print(str(event))
 
     importhtml = event['value']['fields']['importhtml']['stringValue']
-    print(str(importhtml))
+    print(importhtml)
 
     inteltable = pd.read_html(importhtml)
-    print(str(inteltable))
+    testvalue = inteltable[0][0].iloc[1]
+    print('pre-testvalue')
+    print(testvalue)
 
     soup = BeautifulSoup(importhtml, 'html.parser')
-    print(soup)
+    testvalue2 = soup.find_all('h2')[2].br.next_element.split('(')[0].strip()
+    print('pre-testvalue2')
+    print(testvalue2)
 
     return f'Success'
