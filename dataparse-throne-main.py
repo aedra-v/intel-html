@@ -4,7 +4,7 @@ def parse_throne(event, context):
     print(f"Function triggered by change to: {resource_string}.")
     print(str(event))
 
-    importhtml = event['importhtml']
+    importhtml = event['value']['importhtml']['stringValue']
 
     inteltable = pd.read_html(importhtml)
     print(inteltable)
