@@ -14,12 +14,22 @@ import pandas
 
 firebase_admin.initialize_app()
 
-def firestore_delta(event, context):
+def firestore_route(event, context):
+     resource_string = context.resource
+     trigger_docid = resource_string.split('/')[-1]
+     print(trigger_docid)
      print(event)
+
      routedcollection = event['value']['fields']['inteltype']['stringValue'].replace("_", "")
      print(routedcollection)
+
+     intelfields = {
+          'importhtml': event['value']['fields']['data_html']
+          'sourcedoc': trigger_docid
+     }
+
      importintel = firestore.client().collection(routedcollection)
      intelligence = importintel.document()
-     intelligence.set(event)
+     intelligence.set(intelfields)
 
      return f'Success'
