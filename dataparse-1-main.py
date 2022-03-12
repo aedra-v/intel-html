@@ -25,8 +25,8 @@ def firestore_route(event, context):
 
      intelfields = {
           'sourcedoc': trigger_docid,
-          'epoch': event['value']['fields']['epoch'],
-          'inteltype': event['value']['fields']['inteltype'],
+          'epoch': event['value']['fields']['epoch']['stringValue'],
+          'inteltype': event['value']['fields']['inteltype']['stringValue'],
           'importhtml': event['value']['fields']['data_html']['stringValue']
      }
 
