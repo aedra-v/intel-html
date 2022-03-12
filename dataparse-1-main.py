@@ -10,7 +10,7 @@ import json
 import sys
 import timeit
 from datetime import datetime
-import pandas
+import pandas as pd
 
 firebase_admin.initialize_app()
 
@@ -25,7 +25,7 @@ def firestore_route(event, context):
 
      intelfields = {
           'sourcedoc': trigger_docid,
-          'epoch': event['value']['fields']['epoch']['stringValue'],
+          'epoch': event['value']['fields']['epoch']['doubleValue'],
           'inteltype': event['value']['fields']['inteltype']['stringValue'],
           'importhtml': event['value']['fields']['data_html']['stringValue']
      }
