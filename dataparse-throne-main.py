@@ -1,5 +1,11 @@
 from bs4 import BeautifulSoup
 import pandas as pd
+import firebase_admin
+from google.cloud import storage
+from firebase_admin import credentials
+from firebase_admin import firestore
+
+firebase_admin.initialize_app()
 
 def parse_throne(event, context):
     resource_string = context.resource
@@ -11,6 +17,8 @@ def parse_throne(event, context):
     print('p1 pass')
 
     inteltable = pd.read_html(importhtml)
+    inteltable[0][0] = inteltable[0][0].str.replace('\W','', regex=True)
+    inteltable[0][2] = inteltable[0][2].str.replace('\W','', regex=True) 
     test2 = inteltable[0][0].iloc[1]
     print(test2)
 
@@ -45,5 +53,7 @@ def parse_throne(event, context):
     }
 
     print(importdict)
+
+    importintel = firestore.client().collection('throne').document(trigger_docid).update(importdict)
     
     return f'Success'
