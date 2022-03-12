@@ -24,8 +24,10 @@ def firestore_route(event, context):
      print(routedcollection)
 
      intelfields = {
-          'importhtml': event['value']['fields']['data_html']
-          'sourcedoc': trigger_docid
+          'sourcedoc': trigger_docid,
+          'epoch': event['value']['fields']['epoch'],
+          'inteltype': event['value']['fields']['inteltype'],
+          'importhtml': event['value']['fields']['data_html']['stringValue']
      }
 
      importintel = firestore.client().collection(routedcollection)
