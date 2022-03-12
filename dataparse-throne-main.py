@@ -9,7 +9,7 @@ def parse_throne(event, context):
     inteltable = pd.read_html(importhtml)
     print(inteltable)
 
-    soup = BeautifulSoup(event[importhtml], 'html.parser')
+    soup = BeautifulSoup(importhtml, 'html.parser')
     print(soup)
 
     return f'Success'
