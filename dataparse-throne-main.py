@@ -18,7 +18,9 @@ def parse_throne(event, context):
 
     inteltable = pd.read_html(importhtml)
     inteltable[0][0] = inteltable[0][0].str.replace('\W','', regex=True)
+    inteltable[0][1] = inteltable[0][1].str.replace(',','', regex=True)
     inteltable[0][2] = inteltable[0][2].str.replace('\W','', regex=True) 
+    inteltable[0][3] = inteltable[0][3].str.replace(',','', regex=True)
     test2 = inteltable[0][0].iloc[1]
     print(test2)
 
@@ -31,7 +33,8 @@ def parse_throne(event, context):
         'nexttick': soup.find_all('h2')[2].br.next_element.split('(')[1].strip().split(':')[1][:-1].strip(),
         'provlabel': soup.find_all('h2')[2].next_element[16:-2],
         'loc': soup.find_all('h2')[2].a.get_text(),
-        'thronecommand': soup.find('div', id = 'throne-monarch-message').p,
+        'thronecommand': soup.find('div', id = 'throne-monarch-message').p.get_text(),
+        'honor': inteltable[0][1].iloc[1].split(' ')[0],
         inteltable[0][0].iloc[1]: inteltable[0][1].iloc[1],
         inteltable[0][0].iloc[2]: inteltable[0][1].iloc[2],
         inteltable[0][0].iloc[3]: inteltable[0][1].iloc[3],
@@ -40,12 +43,14 @@ def parse_throne(event, context):
         inteltable[0][0].iloc[6]: inteltable[0][1].iloc[6],
         inteltable[0][0].iloc[7]: inteltable[0][1].iloc[7],
         inteltable[0][0].iloc[8]: inteltable[0][1].iloc[8],
-        inteltable[0][0].iloc[9]: inteltable[0][1].iloc[9],
+        inteltable[0][0].iloc[9]: inteltable[0][1].iloc[9][:-11],
         inteltable[0][2].iloc[1]: inteltable[0][1].iloc[1],
         inteltable[0][2].iloc[2]: inteltable[0][3].iloc[2],
         inteltable[0][2].iloc[3]: inteltable[0][3].iloc[3],
-        inteltable[0][2].iloc[4]: inteltable[0][3].iloc[4],
-        inteltable[0][2].iloc[5]: inteltable[0][3].iloc[5],
+        inteltable[0][2].iloc[4]: inteltable[0][3].iloc[4].split('(')[0].strip(),
+        'stealth': inteltable[0][3].iloc[4].split('(')[1][:-1].strip(),
+        inteltable[0][2].iloc[5]: inteltable[0][3].iloc[5].split('(')[0].strip(),
+        'mana': inteltable[0][3].iloc[4].split('(')[1][:-1].strip(),
         inteltable[0][2].iloc[6]: inteltable[0][3].iloc[6],
         inteltable[0][2].iloc[7]: inteltable[0][3].iloc[7],
         inteltable[0][2].iloc[8]: inteltable[0][3].iloc[8],
@@ -53,7 +58,7 @@ def parse_throne(event, context):
     }
 
     print(importdict)
-
+    
     importintel = firestore.client().collection('throne').document(trigger_docid).update(importdict)
     
     return f'Success'
