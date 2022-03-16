@@ -1,42 +1,34 @@
-from flask import Flask
-from flask import request
-from flask import jsonify
-from google.cloud import storage
+from bs4 import BeautifulSoup
+import pandas as pd
 import firebase_admin
+from google.cloud import storage
 from firebase_admin import credentials
 from firebase_admin import firestore
-import requests
-import json
-import sys
-import timeit
-import time
-
-headers = {
-	'Access-Control-Allow-Origin': '*',
-	'Access-Control-Allow-Methods': 'POST',
-	'Access-Control-Max-Age': '1000'
-}
 
 firebase_admin.initialize_app()
+db = firestore.client().collection('intel').document('kdsync').collection('prov')
 
-def incominghttp(request):
-	fields = {}
-	data = request.form.to_dict()
-	for field in data:
-		fields[field] = data[field]
-		
-	importepoch = time.time()
-	fields.update({'epoch': importepoch})
-	
-	importurlstring = fields['url']
-	inteltype = importurlstring[33:]
-	fields.update({"intel-type": inteltype})
+def parse_wizards(event, context):
+    resource_string = context.resource
+    triggerdocid = resource_string.split('/')[-1]
+    sourceurl = event['value']['fields']['sourceurl']['stringValue']
 
-	packagejson = json.dumps(fields, indent = 4)
-	json_object = json.loads(packagejson)
+    importhtml = event['value']['fields']['importhtml']['stringValue']
+    soup = BeautifulSoup(importhtml, 'html.parser')
+    inteltable = pd.read_html(importhtml)
 
-	importintel = firestore.client().collection('intel-dump')
-	intelligence = importintel.document()
-	intelligence.set(json_object)
+    importdict = {
+      'sourcedoc': triggerdocid,
+      'sourceurl': sourceurl,
+      inteltable[0][0].iloc[0]: inteltable[0][1].iloc[0],
+      inteltable[0][0].iloc[1]: inteltable[0][1].iloc[1],
+      inteltable[0][2].iloc[0]: inteltable[0][3].iloc[0].split(' ')[0],
+      'wpa': inteltable[0][3].iloc[0].split(' ')[1][1:]
+    }
+    
+    print(importdict)
+    
+    importintel = db.document('aedra')
+  	intelligence.update(importdict)
 
-	return (jsonify(success='true',), 200, headers)
+    return f'Success'
