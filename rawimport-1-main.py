@@ -29,6 +29,6 @@ def parse_wizards(event, context):
     print(importdict)
     
     importintel = db.document('aedra')
-  	intelligence.update(importdict)
+    intelligence.update(importdict)
 
     return f'Success'
