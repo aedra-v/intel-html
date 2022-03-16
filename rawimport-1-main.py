@@ -6,7 +6,7 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 
 firebase_admin.initialize_app()
-db = firestore.client().collection('intel').document('kdsync').collection('prov')
+db = firestore.client().collection('intel').document('kdsync').collection('prov').document('aedra')
 
 def parse_wizards(event, context):
     resource_string = context.resource
@@ -28,7 +28,6 @@ def parse_wizards(event, context):
     
     print(importdict)
     
-    importintel = db.document('aedra')
     intelligence.update(importdict)
 
     return f'Success'
