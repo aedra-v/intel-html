@@ -28,6 +28,6 @@ def parse_wizards(event, context):
     
     print(importdict)
     
-    intelligence.update(importdict)
+    db.update(importdict)
 
     return f'Success'
